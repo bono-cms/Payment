@@ -12,8 +12,9 @@
 namespace Payment\Storage\MySQL;
 
 use Cms\Storage\MySQL\AbstractMapper;
+use Payment\Storage\TransactionMapperInterface;
 
-final class TransactionMapper extends AbstractMapper
+final class TransactionMapper extends AbstractMapper implements TransactionMapperInterface
 {
     /**
      * {@inheritDoc}
@@ -21,5 +22,20 @@ final class TransactionMapper extends AbstractMapper
     public static function getTableName()
     {
         return self::getWithPrefix('bono_module_payment_transactions');
+    }
+
+    /**
+     * Fetch all transactions
+     * 
+     * @return array
+     */
+    public function fetchAll()
+    {
+        $db = $this->db->select('*')
+                       ->from(self::getTableName())
+                       ->orderBy('id')
+                       ->desc();
+
+        return $db->queryAll();
     }
 }
