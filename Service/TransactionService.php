@@ -15,6 +15,7 @@ use Payment\Storage\TransactionMapperInterface;
 use Cms\Service\AbstractManager;
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Date\TimeHelper;
+use Krystal\Text\TextUtils;
 
 final class TransactionService extends AbstractManager
 {
@@ -65,7 +66,8 @@ final class TransactionService extends AbstractManager
             'datetime' => TimeHelper::getNow(),
             'amount' => $amount,
             'module' => $module,
-            'status' => -1
+            'status' => -1,
+            'token' => TextUtils::uniqueString()
         );
 
         return $this->transactionMapper->persist($data);
