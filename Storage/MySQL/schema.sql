@@ -6,5 +6,6 @@ CREATE TABLE bono_module_payment_transactions (
     `amount` FLOAT NOT NULL COMMENT 'Amount',
     `datetime` DATETIME NOT NULL COMMENT 'Date and time',
     `status` SMALLINT COMMENT 'Status constant',
-    `module` varchar(255) NOT NULL COMMENT 'Module where payment was made'
+    `module` varchar(255) NOT NULL COMMENT 'Module where payment was made',
+    `token` varchar(255) NOT NULL COMMENT 'Unique transaction token'
 );
