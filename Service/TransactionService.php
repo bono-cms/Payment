@@ -14,6 +14,7 @@ namespace Payment\Service;
 use Payment\Storage\TransactionMapperInterface;
 use Cms\Service\AbstractManager;
 use Krystal\Stdlib\VirtualEntity;
+use Krystal\Date\TimeHelper;
 
 final class TransactionService extends AbstractManager
 {
@@ -48,6 +49,25 @@ final class TransactionService extends AbstractManager
                ->setModule($row['module']);
 
         return $entity;
+    }
+
+    /**
+     * Adds new transaction
+     * 
+     * @param float $amount Charged amount
+     * @param string $module
+     * @return boolean
+     */
+    public function add($amount, $module)
+    {
+        $data = array(
+            'datetime' => TimeHelper::getNow(),
+            'amount' => $amount,
+            'module' => $module,
+            'status' => -1
+        );
+
+        return $this->transactionMapper->persist($data);
     }
 
     /**
