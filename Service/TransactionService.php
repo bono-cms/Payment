@@ -44,7 +44,7 @@ final class TransactionService extends AbstractManager
         $entity->setId($row['id'])
                ->setDatetime($row['datetime'])
                ->setAmount($row['amount'])
-               ->setStatus($row['amount'])
+               ->setStatus($row['status'])
                ->setModule($row['module']);
 
         return $entity;
