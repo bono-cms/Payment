@@ -11,6 +11,7 @@
 
 namespace Payment\Service;
 
+use Payment\Collection\StatusCollection;
 use Payment\Storage\TransactionMapperInterface;
 use Cms\Service\AbstractManager;
 use Krystal\Stdlib\VirtualEntity;
@@ -70,7 +71,7 @@ final class TransactionService extends AbstractManager
             'amount' => $amount,
             'module' => $module,
             'payment_system' => $paymentSystem,
-            'status' => -1,
+            'status' => StatusCollection::PARAM_STATUS_TEMPORARY,
             'token' => TextUtils::uniqueString()
         );
 
