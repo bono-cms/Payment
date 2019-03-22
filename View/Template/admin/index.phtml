@@ -1,0 +1,48 @@
+<?php
+
+use Krystal\Widget\GridView\GridViewWidget;
+use Payment\Collection\StatusCollection;
+
+?>
+
+<div class="card">
+    <div class="table-responsive">
+        <?= $this->widget(new GridViewWidget($transactions, array(
+            'tableClass' => 'table table-hover table-bordered table-striped',
+            'columns' => array(
+                array(
+                    'column' => 'id',
+                    'label' => '#'
+                ),
+
+                array(
+                    'column' => 'amount',
+                    'value' => function($row){
+                        return number_format($row['amount']);
+                    }
+                ),
+
+                array(
+                    'column' => 'module',
+                    'translateable' => true
+                ),
+
+                array(
+                    'column' => 'status',
+                    'translateable' => true,
+                    'value' => function($row){
+                        $stCol = new StatusCollection();
+                        return $stCol->findByKey($row['status']);
+                    }
+                )
+            )
+        ))); ?>
+
+        <?php if (empty($transactions)): ?>
+        <div class="center-block">
+            <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No transactions'); ?></h2>
+        </div>
+        <?php endif; ?>
+
+    </div>
+</div>
