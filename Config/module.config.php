@@ -16,7 +16,7 @@ return array(
         )
     ),
     'menu' => array(
-        'name' => 'Payment',
+        'name' => 'Payments',
         'icon' => 'fas fa-credit-card',
         'items' => array(
             array(
