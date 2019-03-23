@@ -65,10 +65,12 @@ final class TransactionService extends AbstractManager
      * @param string $currency Payment currency
      * @param string $module
      * @param string $paymentSystem Payment system name used to perform a transaction
-     * @return boolean
+     * @return string (Returns unique transaction token)
      */
     public function add($payer, $amount, $currency, $module, $paymentSystem)
     {
+        $token = TextUtils::uniqueString();
+        
         // Data to be inserted
         $data = array(
             'datetime' => TimeHelper::getNow(),
@@ -78,10 +80,13 @@ final class TransactionService extends AbstractManager
             'module' => $module,
             'payment_system' => $paymentSystem,
             'status' => StatusCollection::PARAM_STATUS_TEMPORARY,
-            'token' => TextUtils::uniqueString()
+            'token' => $token
         );
 
-        return $this->transactionMapper->persist($data);
+        // Save data
+        $this->transactionMapper->persist($data);
+
+        return $token;
     }
 
     /**
