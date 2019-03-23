@@ -45,6 +45,7 @@ final class TransactionService extends AbstractManager
     {
         $entity = new VirtualEntity();
         $entity->setId($row['id'])
+               ->setPayer($row['payer'])
                ->setDatetime($row['datetime'])
                ->setAmount($row['amount'])
                ->setCurrency($row['currency'])
