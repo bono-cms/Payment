@@ -60,17 +60,19 @@ final class TransactionService extends AbstractManager
     /**
      * Adds new transaction
      * 
+     * @param string $payer Payer name
      * @param float $amount Charged amount
      * @param string $currency Payment currency
      * @param string $module
      * @param string $paymentSystem Payment system name used to perform a transaction
      * @return boolean
      */
-    public function add($amount, $currency, $module, $paymentSystem)
+    public function add($payer, $amount, $currency, $module, $paymentSystem)
     {
         // Data to be inserted
         $data = array(
             'datetime' => TimeHelper::getNow(),
+            'payer' => $payer,
             'amount' => $amount,
             'currency' => $currency,
             'module' => $module,
