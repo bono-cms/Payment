@@ -23,7 +23,7 @@ use Payment\Collection\StatusCollection;
                 array(
                     'column' => 'amount',
                     'value' => function($row){
-                        return number_format($row['amount']);
+                        return number_format($row['amount']) . ' ' . $row['currency'];
                     }
                 ),
 
