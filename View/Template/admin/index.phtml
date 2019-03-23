@@ -16,6 +16,11 @@ use Payment\Collection\StatusCollection;
                 ),
 
                 array(
+                    'column' => 'datetime',
+                    'label' => 'Date and time'
+                ),
+
+                array(
                     'column' => 'amount',
                     'value' => function($row){
                         return number_format($row['amount']);
