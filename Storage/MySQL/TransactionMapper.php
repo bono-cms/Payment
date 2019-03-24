@@ -39,6 +39,17 @@ final class TransactionMapper extends AbstractMapper implements TransactionMappe
     }
 
     /**
+     * Finds transaction by its associated token
+     * 
+     * @param string $token
+     * @return array
+     */
+    public function findByToken($token)
+    {
+        return $this->fetchByColumn('token', $token);
+    }
+
+    /**
      * Fetch all transactions
      * 
      * @return array

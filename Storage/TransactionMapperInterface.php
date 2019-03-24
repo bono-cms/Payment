@@ -14,6 +14,14 @@ interface TransactionMapperInterface
     public function updateStatusByToken($token, $status);
 
     /**
+     * Finds transaction by its associated token
+     * 
+     * @param string $token
+     * @return array
+     */
+    public function findByToken($token);
+
+    /**
      * Fetch all transactions
      * 
      * @return array
