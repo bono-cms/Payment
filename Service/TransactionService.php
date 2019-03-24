@@ -58,6 +58,17 @@ final class TransactionService extends AbstractManager
     }
 
     /**
+     * Confirms that payment is done by token
+     * 
+     * @param string $token Transaction token
+     * @return boolean Depending on success
+     */
+    public function confirmPayment(string $token)
+    {
+        return $this->invoiceMapper->updateStatusByToken($token, StatusCollection::PARAM_STATUS_COMPLETE);
+    }
+
+    /**
      * Adds new transaction
      * 
      * @param string $payer Payer name
@@ -70,7 +81,7 @@ final class TransactionService extends AbstractManager
     public function add($payer, $amount, $currency, $module, $paymentSystem)
     {
         $token = TextUtils::uniqueString();
-        
+
         // Data to be inserted
         $data = array(
             'datetime' => TimeHelper::getNow(),
