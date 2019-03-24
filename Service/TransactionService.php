@@ -101,6 +101,17 @@ final class TransactionService extends AbstractManager
     }
 
     /**
+     * Finds row by its associated token
+     * 
+     * @param string $token
+     * @return array
+     */
+    public function fetchByToken($token)
+    {
+        return $this->prepareResult($this->invoiceMapper->findByToken($token));
+    }
+
+    /**
      * Fetch all transactions
      * 
      * @return array
