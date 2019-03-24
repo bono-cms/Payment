@@ -25,6 +25,20 @@ final class TransactionMapper extends AbstractMapper implements TransactionMappe
     }
 
     /**
+     * Updates transaction status by its token
+     * 
+     * @param string $token Unique transaction token
+     * @param int $status New status constant
+     * @return boolean
+     */
+    public function updateStatusByToken($token, $status)
+    {
+        return $this->db->update(self::getTableName(), array('status' => $status))
+                        ->whereEquals('token', $token)
+                        ->execute();
+    }
+
+    /**
      * Fetch all transactions
      * 
      * @return array

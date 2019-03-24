@@ -5,6 +5,15 @@ namespace Payment\Storage;
 interface TransactionMapperInterface
 {
     /**
+     * Updates transaction status by its token
+     * 
+     * @param string $token Unique transaction token
+     * @param int $status New status constant
+     * @return boolean
+     */
+    public function updateStatusByToken($token, $status);
+
+    /**
      * Fetch all transactions
      * 
      * @return array
