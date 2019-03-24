@@ -29,13 +29,14 @@ final class TransactionMapper extends AbstractMapper implements TransactionMappe
      * 
      * @param string $token Unique transaction token
      * @param int $status New status constant
-     * @return boolean
+     * @return boolean Depending on success
      */
     public function updateStatusByToken($token, $status)
     {
-        return $this->db->update(self::getTableName(), array('status' => $status))
-                        ->whereEquals('token', $token)
-                        ->execute();
+        $db = $this->db->update(self::getTableName(), array('status' => $status))
+                       ->whereEquals('token', $token);
+
+        return (bool) $db->execute(true);
     }
 
     /**

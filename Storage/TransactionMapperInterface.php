@@ -9,7 +9,7 @@ interface TransactionMapperInterface
      * 
      * @param string $token Unique transaction token
      * @param int $status New status constant
-     * @return boolean
+     * @return boolean Depending on success
      */
     public function updateStatusByToken($token, $status);
 
