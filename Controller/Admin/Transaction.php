@@ -12,8 +12,9 @@
 namespace Payment\Controller\Admin;
 
 use Cms\Controller\Admin\AbstractController;
-use Krystal\Stdlib\VirtualEntity;
 use Payment\Collection\StatusCollection;
+use Krystal\Stdlib\VirtualEntity;
+use Krystal\Date\TimeHelper;
 
 final class Transaction extends AbstractController
 {
@@ -65,7 +66,10 @@ final class Transaction extends AbstractController
      */
     public function addAction()
     {
-        return $this->createForm(new VirtualEntity);
+        $transaction = new VirtualEntity;
+        $transaction->setDatetime(TimeHelper::getNow());
+
+        return $this->createForm($transaction);
     }
 
     /**
