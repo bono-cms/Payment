@@ -1,0 +1,89 @@
+<?php
+
+use Krystal\Widget\GridView\GridViewWidget;
+use Payment\Collection\StatusCollection;
+use Cms\View\Icon;
+
+?>
+
+<p>
+    <a class="btn btn-primary" href="<?= $this->url('Payment:Admin:Transaction@addAction'); ?>"><?php $this->show('Add new transaction'); ?></a>
+</p>
+
+<div class="card">
+    <div class="table-responsive">
+        <?= $this->widget(new GridViewWidget($transactions, array(
+            'tableClass' => 'table table-hover table-bordered table-striped',
+            'rowAttributes' => array(
+                'class' => function($row){
+                    return $row['status'] == StatusCollection::PARAM_STATUS_COMPLETE ? 'table-info' : 'table-warning';
+                }
+            ),
+            'columns' => array(
+                array(
+                    'column' => 'id',
+                    'label' => '#'
+                ),
+
+                array(
+                    'column' => 'payer'
+                ),
+
+                array(
+                    'column' => 'datetime',
+                    'label' => 'Date and time'
+                ),
+
+                array(
+                    'column' => 'amount',
+                    'value' => function($row){
+                        return number_format($row['amount']) . ' ' . $row['currency'];
+                    }
+                ),
+
+                array(
+                    'column' => 'module',
+                    'translateable' => true
+                ),
+
+                array(
+                    'column' => 'payment_system',
+                    'translateable' => true
+                ),
+
+                array(
+                    'column' => 'status',
+                    'translateable' => true,
+                    'value' => function($row){
+                        $stCol = new StatusCollection();
+                        return $stCol->findByKey($row['status']);
+                    }
+                )
+            ),
+
+            'actions' => array(
+                'edit' => function($row){
+                    return Icon::edit(
+                        $this->url('Payment:Admin:Transaction@editAction', $row['id']),
+                        $this->translate('Edit this transaction')
+                    );
+                },
+
+                'delete' => function($row){
+                    return Icon::remove(
+                        $this->url('Payment:Admin:Transaction@deleteAction', $row['id']),
+                        $this->translate('Delete this transaction')
+                    );
+                }
+            )
+
+        ))); ?>
+
+        <?php if (empty($transactions)): ?>
+        <div class="center-block">
+            <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No transactions'); ?></h2>
+        </div>
+        <?php endif; ?>
+
+    </div>
+</div>
