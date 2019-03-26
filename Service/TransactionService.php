@@ -58,6 +58,17 @@ final class TransactionService extends AbstractManager
     }
 
     /**
+     * Deletes transaction by its id
+     * 
+     * @param int $id Transaction id
+     * @return string
+     */
+    public function deleteById($id)
+    {
+        return $this->invoiceMapper->deleteByPk($id);
+    }
+
+    /**
      * Confirms that payment is done by token
      * 
      * @param string $token Transaction token
