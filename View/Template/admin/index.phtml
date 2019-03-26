@@ -6,6 +6,10 @@ use Cms\View\Icon;
 
 ?>
 
+<p>
+    <a class="btn btn-primary" href="<?= $this->url('Payment:Admin:Transaction@addAction'); ?>"><?php $this->show('Add new transaction'); ?></a>
+</p>
+
 <div class="card">
     <div class="table-responsive">
         <?= $this->widget(new GridViewWidget($transactions, array(
@@ -53,6 +57,13 @@ use Cms\View\Icon;
             ),
 
             'actions' => array(
+                'edit' => function($row){
+                    return Icon::edit(
+                        $this->url('Payment:Admin:Transaction@editAction', $row['id']),
+                        $this->translate('Edit this transaction')
+                    );
+                },
+
                 'delete' => function($row){
                     return Icon::remove(
                         $this->url('Payment:Admin:Transaction@deleteAction', $row['id']),
