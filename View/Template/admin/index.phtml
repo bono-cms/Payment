@@ -14,6 +14,11 @@ use Cms\View\Icon;
     <div class="table-responsive">
         <?= $this->widget(new GridViewWidget($transactions, array(
             'tableClass' => 'table table-hover table-bordered table-striped',
+            'rowAttributes' => array(
+                'class' => function($row){
+                    return $row['status'] == StatusCollection::PARAM_STATUS_COMPLETE ? 'table-info' : 'table-warning';
+                }
+            ),
             'columns' => array(
                 array(
                     'column' => 'id',
