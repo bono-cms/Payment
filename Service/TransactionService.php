@@ -75,7 +75,7 @@ final class TransactionService extends AbstractManager
      * @param string $token Transaction token
      * @return boolean Depending on success
      */
-    public function confirmPayment(string $token)
+    public function confirmPayment($token)
     {
         return $this->transactionMapper->updateStatusByToken($token, StatusCollection::PARAM_STATUS_COMPLETE);
     }
