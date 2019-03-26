@@ -14,6 +14,7 @@ namespace Payment\Controller\Admin;
 use Cms\Controller\Admin\AbstractController;
 use Payment\Collection\StatusCollection;
 use Krystal\Stdlib\VirtualEntity;
+use Krystal\Stdlib\ArrayUtils;
 use Krystal\Date\TimeHelper;
 
 final class Transaction extends AbstractController
@@ -35,7 +36,8 @@ final class Transaction extends AbstractController
 
         return $this->view->render('form', array(
             'transaction' => $transaction,
-            'statuses' => $stCol->getAll()
+            'statuses' => $stCol->getAll(),
+            'modules' => ArrayUtils::valuefy($this->moduleManager->getLoadedModuleNames())
         ));
     }
 
