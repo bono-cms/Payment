@@ -65,7 +65,7 @@ final class TransactionService extends AbstractManager
      */
     public function deleteById($id)
     {
-        return $this->invoiceMapper->deleteByPk($id);
+        return $this->transactionMapper->deleteByPk($id);
     }
 
     /**
@@ -76,7 +76,7 @@ final class TransactionService extends AbstractManager
      */
     public function confirmPayment(string $token)
     {
-        return $this->invoiceMapper->updateStatusByToken($token, StatusCollection::PARAM_STATUS_COMPLETE);
+        return $this->transactionMapper->updateStatusByToken($token, StatusCollection::PARAM_STATUS_COMPLETE);
     }
 
     /**
