@@ -30,4 +30,18 @@ final class Transaction extends AbstractController
             'transactions' => $this->getModuleService('transactionService')->fetchAll()
         ));
     }
+
+    /**
+     * Deletes a transaction by its id
+     * 
+     * @param int $id Transaction id
+     * @return string
+     */
+    public function deleteAction($id)
+    {
+        $this->getModuleService('transactionService')->deleteById($id);
+
+        $this->flashBag->set('success', 'Selected element has been removed successfully');
+        return 1;
+    }
 }

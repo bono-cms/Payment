@@ -5,6 +5,10 @@ return array(
         'controller' => 'Admin:Transaction@indexAction'
     ),
 
+    '/%s/module/payment/delete/(:var)' => array(
+        'controller' => 'Admin:Transaction@deleteAction'
+    ),
+
     '/payment/transaction/new/(:var)' => array(
         'controller' => 'Payment@newAction'
     ),

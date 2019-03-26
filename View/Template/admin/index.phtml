@@ -2,6 +2,7 @@
 
 use Krystal\Widget\GridView\GridViewWidget;
 use Payment\Collection\StatusCollection;
+use Cms\View\Icon;
 
 ?>
 
@@ -49,7 +50,17 @@ use Payment\Collection\StatusCollection;
                         return $stCol->findByKey($row['status']);
                     }
                 )
+            ),
+
+            'actions' => array(
+                'delete' => function($row){
+                    return Icon::remove(
+                        $this->url('Payment:Admin:Transaction@deleteAction', $row['id']),
+                        $this->translate('Delete this transaction')
+                    );
+                }
             )
+
         ))); ?>
 
         <?php if (empty($transactions)): ?>
