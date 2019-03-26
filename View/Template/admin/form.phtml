@@ -1,0 +1,68 @@
+<?php
+
+use Krystal\Form\Element;
+defined('KRYSTAL') or die;
+
+?>
+
+<form class="card" data-group="transaction" autocomplete="off">
+    <?= Element::hidden('transaction[id]', $transaction->getId()); ?>
+
+    <div class="form-group">
+        <label class="col-lg-12"><?php $this->show('Amount'); ?></label>
+        <div class="col-lg-10">
+            <?= Element::text('transaction[amount]', $transaction->getAmount(), array('class' => 'form-control')); ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-12"><?php $this->show('Status'); ?></label>
+        <div class="col-lg-10">
+            <?= Element::text('transaction[status]', $transaction->getStatus(), array('class' => 'form-control')); ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-12"><?php $this->show('Date and time'); ?></label>
+        <div class="col-lg-10">
+            <?= Element::text('transaction[datetime]', $transaction->getDatetime(), array('class' => 'form-control')); ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-12"><?php $this->show('Module'); ?></label>
+        <div class="col-lg-10">
+            <?= Element::text('transaction[module]', $transaction->getModule(), array('class' => 'form-control')); ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-12"><?php $this->show('Payment System'); ?></label>
+        <div class="col-lg-10">
+            <?= Element::text('transaction[payment_system]', $transaction->getPaymentSystem(), array('class' => 'form-control')); ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-12"><?php $this->show('Currency'); ?></label>
+        <div class="col-lg-10">
+            <?= Element::text('transaction[currency]', $transaction->getCurrency(), array('class' => 'form-control')); ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-12"><?php $this->show('Payer'); ?></label>
+        <div class="col-lg-10">
+            <?= Element::text('transaction[payer]', $transaction->getPayer(), array('class' => 'form-control')); ?>
+        </div>
+    </div>
+
+    <?php $this->loadPartial('actions', array(
+        'new' => !$transaction->getId(),
+        'add' => 'Payment:Admin:Transaction@addAction',
+        'edit' => 'Payment:Admin:Transaction@editAction',
+        'save' => 'Payment:Admin:Transaction@saveAction',
+        'cancel' => 'Payment:Admin:Transaction@indexAction'
+    )); ?>
+
+</form>
