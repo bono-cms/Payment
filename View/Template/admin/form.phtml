@@ -47,7 +47,7 @@ defined('KRYSTAL') or die;
     <div class="form-group">
         <label class="col-lg-12"><?php $this->show('Status'); ?></label>
         <div class="col-lg-10">
-            <?= Element::text('transaction[status]', $transaction->getStatus(), array('class' => 'form-control')); ?>
+            <?= Element::select('transaction[status]', $this->translateArray($statuses), $transaction->getStatus(), array('class' => 'form-control')); ?>
         </div>
     </div>
 

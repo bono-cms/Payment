@@ -13,6 +13,7 @@ namespace Payment\Controller\Admin;
 
 use Cms\Controller\Admin\AbstractController;
 use Krystal\Stdlib\VirtualEntity;
+use Payment\Collection\StatusCollection;
 
 final class Transaction extends AbstractController
 {
@@ -24,13 +25,16 @@ final class Transaction extends AbstractController
      */
     private function createForm(VirtualEntity $transaction)
     {
+        $stCol = new StatusCollection();
+
         // Append a breadcrumb
         $this->view->getBreadcrumbBag()
                    ->addOne('Payments', 'Payment:Admin:Transaction@indexAction')
                    ->addOne($transaction->getId() ? 'Edit the transaction' : 'Add new transaction');
 
         return $this->view->render('form', array(
-            'transaction' => $transaction
+            'transaction' => $transaction,
+            'statuses' => $stCol->getAll()
         ));
     }
 
