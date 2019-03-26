@@ -80,6 +80,31 @@ final class TransactionService extends AbstractManager
     }
 
     /**
+     * Returns last transaction id
+     * 
+     * @return mixed
+     */
+    public function getLastId()
+    {
+        return $this->transactionMapper->getMaxId();
+    }
+
+    /**
+     * Inserts or updates a transaction
+     * 
+     * @param array $input
+     * @return boolean
+     */
+    public function save(array $input)
+    {
+        if (!isset($input['token'])) {
+            $input['token'] = TextUtils::uniqueString();
+        }
+
+        return $this->transactionMapper->persist($input);
+    }
+
+    /**
      * Adds new transaction
      * 
      * @param string $payer Payer name
