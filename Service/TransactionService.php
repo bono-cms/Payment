@@ -112,6 +112,17 @@ final class TransactionService extends AbstractManager
     }
 
     /**
+     * Fetches transaction by it Id
+     * 
+     * @param string $id Transaction id
+     * @return array
+     */
+    public function fetchById($id)
+    {
+        return $this->prepareResult($this->transactionMapper->findByPk($id));
+    }
+
+    /**
      * Finds row by its associated token
      * 
      * @param string $token
@@ -119,7 +130,7 @@ final class TransactionService extends AbstractManager
      */
     public function fetchByToken($token)
     {
-        return $this->prepareResult($this->invoiceMapper->findByToken($token));
+        return $this->prepareResult($this->transactionMapper->findByToken($token));
     }
 
     /**
