@@ -55,8 +55,10 @@ final class Transaction extends AbstractController
         $transactionService->save($input);
 
         if ($input['id']) {
+            $this->flashBag->set('success', 'The element has been updated successfully');
             return 1;
         } else {
+            $this->flashBag->set('success', 'The element has been created successfully');
             return $transactionService->getLastId();
         }
     }
