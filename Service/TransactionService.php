@@ -52,6 +52,7 @@ final class TransactionService extends AbstractManager
                ->setStatus($row['status'])
                ->setModule($row['module'])
                ->setPaymentSystem($row['payment_system'])
+               ->setDescription($row['description'])
                ->setToken($row['token']);
 
         return $entity;
