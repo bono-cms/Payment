@@ -13,4 +13,17 @@ namespace Payment\Extension;
 
 interface ResponseHandlerInterface
 {
+    /**
+     * Checkes whether user canceled transaction
+     * 
+     * @return boolean
+     */
+    public function canceled();
+
+    /**
+     * Checkes whether transaction was successful
+     * 
+     * @return boolean
+     */
+    public function successful();
 }
