@@ -11,7 +11,7 @@
 
 namespace Payment\Extension;
 
-interface WebExtensionInterface
+interface WebFormExtensionInterface
 {
     /**
      * Returns form action URL
