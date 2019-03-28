@@ -12,6 +12,7 @@
 namespace Payment\Controller;
 
 use Site\Controller\AbstractController;
+use Payment\Extension\ExtensionFactory;
 
 /**
  * Main payment controller, that handles all transactions
@@ -39,7 +40,6 @@ final class Payment extends AbstractController
      */
     public function successAction($token)
     {
-        
     }
 
     /**
@@ -50,7 +50,22 @@ final class Payment extends AbstractController
      */
     public function gatewayAction($token)
     {
-        
+        // Find transaction row by its token
+        $transaction = $this->getModuleService('transactionService')->fetchByToken($token);
+
+        if ($transaction) {
+            // Create back URL
+            $backUrl = $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@successAction', array($token));
+            $gateway = ExtensionFactory::build($transaction['payment_system'], $transaction['id'], $transaction['amount'], $backUrl);
+
+            return $this->view->disableLayout()->render('gateway', [
+                'gateway' => $gateway
+            ]);
+
+        } else {
+            // Invalid token
+            return false;
+        }
     }
 
     /**
