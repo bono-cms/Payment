@@ -29,7 +29,7 @@ final class ExtensionFactory
      * @throws \RuntimeException If invald extensio name provided
      * @return \Payment\Extension\WebFormExtensionInterface
      */
-    public function build($extension, $price, $orderId, $back, array $options)
+    public static function build($extension, $price, $orderId, $back, array $options)
     {
         // Extension class factory to be verified for existence
         $className = sprintf('\Payment\Extension\%s\%sFactory', $extension, $extension);
