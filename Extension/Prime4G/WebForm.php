@@ -49,6 +49,16 @@ final class WebForm implements WebFormExtensionInterface
     }
 
     /**
+     * Returns form request method to be used when submitting
+     * 
+     * @return string
+     */
+    public function getMethod()
+    {
+        return 'POST';
+    }
+
+    /**
      * Normalizes the price
      * 
      * @param string $value
