@@ -13,6 +13,7 @@ namespace Payment\Controller;
 
 use Site\Controller\AbstractController;
 use Payment\Extension\ExtensionFactory;
+use Payment\Extension\ResponseFactory;
 
 /**
  * Main payment controller, that handles all transactions
@@ -40,6 +41,20 @@ final class Payment extends AbstractController
      */
     public function successAction($token)
     {
+        // Find transaction row by its token
+        $transaction = $this->getModuleService('transactionService')->fetchByToken($token);
+
+        $responseFactory = new ResponseFactory($this->serviceLocator);
+        $response = $responseFactory->build($transaction['payment_system']);
+
+        if ($response->canceled()) {
+            return $this->view->render('invoice/cancel');
+        } else {
+            // Now confirm payment by token, since its successful
+            $this->getModuleService('transactionService')->confirmPayment($token);
+
+            return $this->view->render('invoice/success');
+        }
     }
 
     /**
