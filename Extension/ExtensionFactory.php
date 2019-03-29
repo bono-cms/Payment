@@ -29,7 +29,7 @@ final class ExtensionFactory
      * @throws \RuntimeException If invald extensio name provided
      * @return \Payment\Extension\WebFormExtensionInterface
      */
-    public static function build($extension, $price, $orderId, $back, array $options)
+    public static function build($extension, $price, $orderId, $back, array $options = array())
     {
         // Extension class factory to be verified for existence
         $className = sprintf('\Payment\Extension\%s\%sFactory', $extension, $extension);
@@ -39,8 +39,8 @@ final class ExtensionFactory
                 sprintf('Either payment extension %s does not exist or it has inconvenient internal structure', $extension)
             );
         } else {
-            $class = new $className($price, $orderId, $back, $options);
-            return $class->build();
+            $class = new $className();
+            return $class->build($price, $orderId, $back, $options);
         }
     }
 }
