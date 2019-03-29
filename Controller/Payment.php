@@ -31,6 +31,10 @@ final class Payment extends AbstractController
         }
 
         parent::bootstrap($action);
+
+        // Force to render templates only from current module
+        $this->view->setModule('Payment')
+                   ->setTheme('payment');
     }
 
     /**
@@ -48,12 +52,12 @@ final class Payment extends AbstractController
         $response = $responseFactory->build($transaction['extension']);
 
         if ($response->canceled()) {
-            return $this->view->render('invoice/cancel');
+            return $this->view->render('payment/cancel');
         } else {
             // Now confirm payment by token, since its successful
             $this->getModuleService('transactionService')->confirmPayment($token);
 
-            return $this->view->render('invoice/success');
+            return $this->view->render('payment/success');
         }
     }
 
@@ -73,7 +77,7 @@ final class Payment extends AbstractController
             $backUrl = $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@successAction', array($token));
             $gateway = ExtensionFactory::build($transaction['extension'], $transaction['id'], $transaction['amount'], $backUrl);
 
-            return $this->view->disableLayout()->render('gateway', [
+            return $this->view->disableLayout()->render('payment/gateway', [
                 'gateway' => $gateway
             ]);
 
