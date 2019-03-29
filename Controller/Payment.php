@@ -45,7 +45,7 @@ final class Payment extends AbstractController
         $transaction = $this->getModuleService('transactionService')->fetchByToken($token);
 
         $responseFactory = new ResponseFactory($this->serviceLocator);
-        $response = $responseFactory->build($transaction['payment_system']);
+        $response = $responseFactory->build($transaction['extension']);
 
         if ($response->canceled()) {
             return $this->view->render('invoice/cancel');
@@ -71,7 +71,7 @@ final class Payment extends AbstractController
         if ($transaction) {
             // Create back URL
             $backUrl = $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@successAction', array($token));
-            $gateway = ExtensionFactory::build($transaction['payment_system'], $transaction['id'], $transaction['amount'], $backUrl);
+            $gateway = ExtensionFactory::build($transaction['extension'], $transaction['id'], $transaction['amount'], $backUrl);
 
             return $this->view->disableLayout()->render('gateway', [
                 'gateway' => $gateway
