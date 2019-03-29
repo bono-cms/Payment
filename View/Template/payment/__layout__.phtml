@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><?= $title; ?></title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/cosmo/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= $this->moduleAsset('site-styles.css'); ?>" />
+</head>
+<body>
+
+<section class="main">
+    <div class="container">
+        <div class="main-wrapper">
+            <?= $fragment; ?>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
