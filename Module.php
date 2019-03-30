@@ -13,6 +13,7 @@ namespace Payment;
 
 use Cms\AbstractCmsModule;
 use Payment\Service\TransactionService;
+use Payment\Service\ExtensionService;
 
 final class Module extends AbstractCmsModule
 {
@@ -21,8 +22,12 @@ final class Module extends AbstractCmsModule
      */
     public function getServiceProviders()
     {
+        $config = $this->getConfig();
+        $constraints = $config['constraints'];
+
         return array(
-            'transactionService' => new TransactionService($this->getMapper('\Payment\Storage\MySQL\TransactionMapper'))
+            'transactionService' => new TransactionService($this->getMapper('\Payment\Storage\MySQL\TransactionMapper')),
+            'extensionService' => new ExtensionService($this->moduleManager, $constraints)
         );
     }
 }

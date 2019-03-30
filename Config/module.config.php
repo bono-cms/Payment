@@ -24,5 +24,10 @@ return array(
                 'name' => 'View all transactions'
             )
         )
+    ),
+    // Supported modules that might accept payments
+    'constraints' => array(
+        'Tour',
+        'Shop'
     )
 );

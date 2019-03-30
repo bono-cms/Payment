@@ -29,6 +29,9 @@ final class Transaction extends AbstractController
     {
         $stCol = new StatusCollection();
 
+        // Extension service
+        $extensionService = $this->getModuleService('extensionService');
+
         // Append a breadcrumb
         $this->view->getBreadcrumbBag()
                    ->addOne('Payments', 'Payment:Admin:Transaction@indexAction')
@@ -37,7 +40,8 @@ final class Transaction extends AbstractController
         return $this->view->render('form', array(
             'transaction' => $transaction,
             'statuses' => $stCol->getAll(),
-            'modules' => ArrayUtils::valuefy($this->moduleManager->getLoadedModuleNames())
+            'modules' => $extensionService->getModules(),
+            'extensions' => $extensionService->getExtensions()
         ));
     }
 
