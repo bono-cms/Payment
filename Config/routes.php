@@ -21,7 +21,7 @@ return array(
         'controller' => 'Admin:Transaction@deleteAction'
     ),
 
-    '/payment/transaction/new/(:var)' => array(
+    '/payment/transaction/new' => array(
         'controller' => 'Payment@newAction'
     ),
 
