@@ -48,8 +48,7 @@ final class ResponseFactory
                 sprintf('Either payment extension %s does not exist or it has inconvenient internal structure', $extension)
             );
         } else {
-            $class = new $className($this->sl);
-            return $class->build();
+            return new $className($this->sl);
         }
     }
 }
