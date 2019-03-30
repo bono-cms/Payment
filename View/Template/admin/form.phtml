@@ -38,7 +38,7 @@ defined('KRYSTAL') or die;
             <div class="form-group">
                 <label class="col-lg-12"><?php $this->show('Payment System'); ?></label>
                 <div class="col-lg-12">
-                    <?= Element::text('transaction[extension]', $transaction->getExtension(), array('class' => 'form-control')); ?>
+                    <?= Element::select('transaction[extension]', $this->translateArray($extensions), $transaction->getExtension(), array('class' => 'form-control')); ?>
                 </div>
             </div>
         </div>
