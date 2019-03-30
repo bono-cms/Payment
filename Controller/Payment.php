@@ -139,7 +139,7 @@ final class Payment extends AbstractController
                 } else {
                     // Otherwise redirect to payment page
                     return $this->json(array(
-                        'url' => $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@gatewayAction', array($token))
+                        'backUrl' => $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@gatewayAction', array($token))
                     ));
                 }
 
