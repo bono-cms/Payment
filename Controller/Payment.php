@@ -79,9 +79,9 @@ final class Payment extends AbstractController
             $backUrl = $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@successAction', array($token));
             $gateway = ExtensionFactory::build($transaction['extension'], $transaction['id'], $transaction['amount'], $backUrl);
 
-            return $this->view->disableLayout()->render('gateway', [
+            return $this->view->disableLayout()->render('gateway', array(
                 'gateway' => $gateway
-            ]);
+            ));
 
         } else {
             // Invalid token
@@ -106,23 +106,23 @@ final class Payment extends AbstractController
             $entity['module'] = 'News';
             $entity['extension'] = 'Prime4G';
 
-            return $this->view->render('form', [
+            return $this->view->render('form', array(
                 'entity' => $entity,
                 'title' => 'New payment'
-            ]);
+            ));
 
         } else {
             $data = $this->request->getPost();
 
             // Build form validator
-            $formValidator = $this->createValidator([
+            $formValidator = $this->createValidator(array(
                 'input' => [
                     'source' => $data,
                     'definition' => [
                         'payer' => new Pattern\Name(),
                     ]
                 ]
-            ]);
+            ));
 
             if ($formValidator->isValid()) {
                 // Add now and get last token
@@ -134,9 +134,9 @@ final class Payment extends AbstractController
                     return '1';
                 } else {
                     // Otherwise redirect to payment page
-                    return $this->json([
+                    return $this->json(array(
                         'url' => $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@gatewayAction', array($token))
-                    ]);
+                    ));
                 }
 
             } else {
