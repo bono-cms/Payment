@@ -37,7 +37,7 @@ final class Transaction extends AbstractController
         return $this->view->render('form', array(
             'transaction' => $transaction,
             'statuses' => $stCol->getAll(),
-            'modules' => ArrayUtils::valuefy($this->moduleManager->getLoadedModuleNames())
+            'modules' => $this->getModuleService('extensionService')->getModules()
         ));
     }
 

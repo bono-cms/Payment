@@ -33,4 +33,14 @@ final class ExtensionService
     {
         $this->moduleManager = $moduleManager;
     }
+
+    /**
+     * Returns currently loaded modules that support payments
+     * 
+     * @return array
+     */
+    public function getModules()
+    {
+        return ArrayUtils::valuefy($this->moduleManager->getLoadedModuleNames());
+    }
 }
