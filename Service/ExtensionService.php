@@ -13,6 +13,7 @@ namespace Payment\Service;
 
 use Krystal\Application\Module\ModuleManagerInterface;
 use Krystal\Stdlib\ArrayUtils;
+use Krystal\Filesystem\FileManager;
 
 final class ExtensionService
 {
@@ -42,5 +43,20 @@ final class ExtensionService
     public function getModules()
     {
         return ArrayUtils::valuefy($this->moduleManager->getLoadedModuleNames());
+    }
+
+    /**
+     * Returns currently loaded payment extensions
+     * 
+     * @return array
+     */
+    public function getExtensions()
+    {
+        // Path to extensions directory
+        $dir = dirname(__DIR__) . '\\Extension';
+
+        $extensions = FileManager::getFirstLevelDirs($dir);
+
+        return ArrayUtils::valuefy($extensions);
     }
 }
