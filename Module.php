@@ -22,9 +22,12 @@ final class Module extends AbstractCmsModule
      */
     public function getServiceProviders()
     {
+        $config = $this->getConfig();
+        $constraints = $config['constraints'];
+
         return array(
             'transactionService' => new TransactionService($this->getMapper('\Payment\Storage\MySQL\TransactionMapper')),
-            'extensionService' => new ExtensionService($this->moduleManager)
+            'extensionService' => new ExtensionService($this->moduleManager, $constraints)
         );
     }
 }
