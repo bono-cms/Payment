@@ -54,12 +54,16 @@ final class Payment extends AbstractController
         $response = $responseFactory->build($transaction['extension']);
 
         if ($response->canceled()) {
-            return $this->view->render('cancel');
+            return $this->view->render('cancel', array(
+                'title' => 'Payment cancelation'
+            ));
         } else {
             // Now confirm payment by token, since its successful
             $this->getModuleService('transactionService')->confirmPayment($token);
 
-            return $this->view->render('success');
+            return $this->view->render('success', array(
+                'title' => 'Your payment has been accepted'
+            ));
         }
     }
 
