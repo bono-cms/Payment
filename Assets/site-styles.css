@@ -1,0 +1,21 @@
+/* Payment checkout page styles */
+
+body {
+    background: #eae8e8;
+}
+
+.main {
+    padding: 5px;
+}
+
+.main .main-wrapper {
+    padding: 28px;
+    background: #fff;
+    width: 76%;
+    margin: 32px auto;
+    box-shadow: 11px 14px 36px 1px rgba(0,0,0,.15);
+}
+
+.main .page-header {
+    padding-left: 13px;
+}

@@ -51,7 +51,7 @@ final class TransactionService extends AbstractManager
                ->setCurrency($row['currency'])
                ->setStatus($row['status'])
                ->setModule($row['module'])
-               ->setPaymentSystem($row['payment_system'])
+               ->setExtension($row['extension'])
                ->setDescription($row['description'])
                ->setToken($row['token']);
 
@@ -112,10 +112,10 @@ final class TransactionService extends AbstractManager
      * @param float $amount Charged amount
      * @param string $currency Payment currency
      * @param string $module
-     * @param string $paymentSystem Payment system name used to perform a transaction
+     * @param string $extension Payment system name used to perform a transaction
      * @return string (Returns unique transaction token)
      */
-    public function add($payer, $amount, $currency, $module, $paymentSystem)
+    public function add($payer, $amount, $currency, $module, $extension)
     {
         $token = TextUtils::uniqueString();
 
@@ -126,7 +126,7 @@ final class TransactionService extends AbstractManager
             'amount' => $amount,
             'currency' => $currency,
             'module' => $module,
-            'payment_system' => $paymentSystem,
+            'extension' => $extension,
             'status' => StatusCollection::PARAM_STATUS_TEMPORARY,
             'token' => $token
         );
