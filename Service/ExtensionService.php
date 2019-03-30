@@ -25,14 +25,23 @@ final class ExtensionService
     private $moduleManager;
 
     /**
+     * Supported modules that might accept payments
+     * 
+     * @var array
+     */
+    private $constraints = array();
+
+    /**
      * State initialization
      * 
      * @param \Krystal\Application\Module\ModuleManagerInterface $moduleManager
+     * @param array $constraints Supported modules that might accept payments
      * @return void
      */
-    public function __construct(ModuleManagerInterface $moduleManager)
+    public function __construct(ModuleManagerInterface $moduleManager, array $constraints)
     {
         $this->moduleManager = $moduleManager;
+        $this->constraints = $constraints;
     }
 
     /**
@@ -42,7 +51,17 @@ final class ExtensionService
      */
     public function getModules()
     {
-        return ArrayUtils::valuefy($this->moduleManager->getLoadedModuleNames());
+        // Currently loaded modules
+        $modules = $this->moduleManager->getLoadedModuleNames();
+        $supported = array(); // Modules that support payments
+
+        foreach ($modules as $module) {
+            if (in_array($module, $this->constraints)) {
+                $supported[] = $module;
+            }
+        }
+
+        return ArrayUtils::valuefy($supported);
     }
 
     /**
