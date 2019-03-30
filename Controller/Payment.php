@@ -14,6 +14,8 @@ namespace Payment\Controller;
 use Site\Controller\AbstractController;
 use Payment\Extension\ExtensionFactory;
 use Payment\Extension\ResponseFactory;
+use Krystal\Stdlib\VirtualEntity;
+use Krystal\Validate\Pattern;
 
 /**
  * Main payment controller, that handles all transactions
@@ -52,12 +54,12 @@ final class Payment extends AbstractController
         $response = $responseFactory->build($transaction['extension']);
 
         if ($response->canceled()) {
-            return $this->view->render('payment/cancel');
+            return $this->view->render('cancel');
         } else {
             // Now confirm payment by token, since its successful
             $this->getModuleService('transactionService')->confirmPayment($token);
 
-            return $this->view->render('payment/success');
+            return $this->view->render('success');
         }
     }
 
@@ -77,7 +79,7 @@ final class Payment extends AbstractController
             $backUrl = $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@successAction', array($token));
             $gateway = ExtensionFactory::build($transaction['extension'], $transaction['id'], $transaction['amount'], $backUrl);
 
-            return $this->view->disableLayout()->render('payment/gateway', [
+            return $this->view->disableLayout()->render('gateway', [
                 'gateway' => $gateway
             ]);
 
@@ -94,6 +96,52 @@ final class Payment extends AbstractController
      */
     public function newAction()
     {
-        
+        if ($this->request->isGet()) {
+            $entity = new VirtualEntity();
+
+            // Fill amount and product if provided
+            $entity['product'] = $this->request->getQuery('product');
+            $entity['amount'] = $this->request->getQuery('amount', false);
+            $entity['currency'] = 'USD';
+            $entity['module'] = 'News';
+            $entity['extension'] = 'Prime4G';
+
+            return $this->view->render('form', [
+                'entity' => $entity,
+                'title' => 'New payment'
+            ]);
+
+        } else {
+            $data = $this->request->getPost();
+
+            // Build form validator
+            $formValidator = $this->createValidator([
+                'input' => [
+                    'source' => $data,
+                    'definition' => [
+                        'payer' => new Pattern\Name(),
+                    ]
+                ]
+            ]);
+
+            if ($formValidator->isValid()) {
+                // Add now and get last token
+                $token = $this->getModuleService('transactionService')->add($data['payer'], $data['amount'], $data['currency'], $data['module'], $data['extension']);
+
+                // If amount not provided, then update
+                if (!isset($data['amount'])) {
+                    $this->flashBag->set('success', 'Thanks! Your invoice has been sent');
+                    return '1';
+                } else {
+                    // Otherwise redirect to payment page
+                    return $this->json([
+                        'url' => $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@gatewayAction', array($token))
+                    ]);
+                }
+
+            } else {
+                return $formValidator->getErrors();
+            }
+        }
     }
 }
