@@ -107,11 +107,11 @@ final class Payment extends AbstractController
             $entity['product'] = $this->request->getQuery('product');
             $entity['amount'] = $this->request->getQuery('amount', false);
             $entity['currency'] = 'USD';
-            $entity['module'] = 'News';
 
             return $this->view->render('form', array(
                 'entity' => $entity,
                 'extensions' => $this->getModuleService('extensionService')->getExtensions(),
+                'modules' => $this->getModuleService('extensionService')->getModules(),
                 'title' => 'New payment'
             ));
 

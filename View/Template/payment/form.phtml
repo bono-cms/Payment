@@ -30,6 +30,13 @@ use Krystal\Form\Element;
     </div>
 
     <div class="form-group">
+      <label for="inputModule" class="col-lg-12 control-label"><?php $this->show('Module'); ?></label>
+      <div class="col-lg-10">
+        <?= Element::select('module', $this->translateArray($modules), $entity['module'], array('class' => 'form-control', 'id' => 'inputModule')); ?>
+      </div>
+    </div>
+
+    <div class="form-group">
       <label for="inputProduct" class="col-lg-12 control-label"><?php $this->show('Product'); ?></label>
       <div class="col-lg-10">
         <?= Element::textarea('product', $entity['product'], ['class' => 'form-control', 'id' => 'inputProduct', 'placeholder' => $this->translate('Product name')]); ?>
