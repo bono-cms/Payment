@@ -14,6 +14,7 @@ namespace Payment\Controller;
 use Site\Controller\AbstractController;
 use Payment\Extension\ExtensionFactory;
 use Payment\Extension\ResponseFactory;
+use Payment\Collection\StatusCollection;
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Validate\Pattern;
 
@@ -79,6 +80,11 @@ final class Payment extends AbstractController
         $transaction = $this->getModuleService('transactionService')->fetchByToken($token);
 
         if ($transaction) {
+            // Don't allow processing finished transaction
+            if ($transaction['status'] == StatusCollection::PARAM_STATUS_COMPLETE) {
+                return $this->view->render('process-error');
+            }
+
             // Create back URL
             $backUrl = $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@successAction', array($token));
             $gateway = ExtensionFactory::build($transaction['extension'], $transaction['id'], $transaction['amount'], $backUrl);
