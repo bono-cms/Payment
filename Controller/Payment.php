@@ -120,12 +120,12 @@ final class Payment extends AbstractController
 
             // Build form validator
             $formValidator = $this->createValidator(array(
-                'input' => [
+                'input' => array(
                     'source' => $data,
-                    'definition' => [
+                    'definition' => array(
                         'payer' => new Pattern\Name(),
-                    ]
-                ]
+                    )
+                )
             ));
 
             if ($formValidator->isValid()) {
