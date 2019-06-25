@@ -4,7 +4,7 @@ use Krystal\Form\Element;
 
 ?>
 
-<h2 class="page-header"><?= $title; ?></h2>
+<h2 class="page-header"><?php $this->show($title); ?></h2>
 <br />
 
 <form class="form-horizontal" autocomplete="off" method="POST">
