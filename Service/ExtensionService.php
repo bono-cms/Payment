@@ -72,7 +72,7 @@ final class ExtensionService
     public function getExtensions()
     {
         // Path to extensions directory
-        $dir = dirname(__DIR__) . '\\Extension';
+        $dir = dirname(__DIR__) . '/Extension';
 
         $extensions = FileManager::getFirstLevelDirs($dir);
 
