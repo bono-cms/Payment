@@ -45,6 +45,7 @@ final class TransactionService extends AbstractManager
     {
         $entity = new VirtualEntity();
         $entity->setId($row['id'])
+               ->setEmail($row['email'])
                ->setPayer($row['payer'])
                ->setDatetime($row['datetime'])
                ->setAmount($row['amount'])
@@ -108,6 +109,7 @@ final class TransactionService extends AbstractManager
     /**
      * Adds new transaction
      * 
+     * @param string $email Client's email
      * @param string $payer Payer name
      * @param float $amount Charged amount
      * @param string $currency Payment currency
@@ -115,7 +117,7 @@ final class TransactionService extends AbstractManager
      * @param string $extension Payment system name used to perform a transaction
      * @return string (Returns unique transaction token)
      */
-    public function add($payer, $amount, $currency, $module, $extension)
+    public function add($email, $payer, $amount, $currency, $module, $extension)
     {
         $token = TextUtils::uniqueString();
 
