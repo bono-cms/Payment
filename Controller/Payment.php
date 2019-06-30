@@ -136,7 +136,14 @@ final class Payment extends AbstractController
 
             if ($formValidator->isValid()) {
                 // Add now and get last token
-                $token = $this->getModuleService('transactionService')->add($data['payer'], $data['amount'], $data['currency'], $data['module'], $data['extension']);
+                $token = $this->getModuleService('transactionService')->add(
+                    $data['email'],
+                    $data['payer'],
+                    $data['amount'],
+                    $data['currency'],
+                    $data['module'],
+                    $data['extension']
+                );
 
                 // If amount not provided, then update
                 if (!isset($data['amount'])) {
