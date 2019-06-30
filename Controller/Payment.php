@@ -130,6 +130,7 @@ final class Payment extends AbstractController
                     'source' => $data,
                     'definition' => array(
                         'payer' => new Pattern\Name(),
+                        'email' => new Pattern\Email()
                     )
                 )
             ));
