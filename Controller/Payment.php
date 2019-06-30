@@ -87,7 +87,7 @@ final class Payment extends AbstractController
 
             // Create back URL
             $backUrl = $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@successAction', array($token));
-            $gateway = ExtensionFactory::build($transaction['extension'], $transaction['id'], $transaction['amount'], $backUrl);
+            $gateway = ExtensionFactory::build($transaction['extension'], $transaction['amount'], $transaction['id'], $backUrl);
 
             return $this->view->disableLayout()->render('gateway', array(
                 'gateway' => $gateway
