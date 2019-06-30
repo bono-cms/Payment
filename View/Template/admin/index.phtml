@@ -6,9 +6,16 @@ use Cms\View\Icon;
 
 ?>
 
-<p>
-    <a class="btn btn-primary" href="<?= $this->url('Payment:Admin:Transaction@addAction'); ?>"><?php $this->show('Add new transaction'); ?></a>
-</p>
+<div class="btn-toolbar">
+    <div class="btn-group mr-2">
+        <a class="btn btn-primary" href="<?= $this->url('Payment:Admin:Transaction@addAction'); ?>"><?php $this->show('Add new transaction'); ?></a>
+    </div>
+
+    <div class="btn-group mr-2">
+        <a class="btn btn-primary" href="<?= $this->url('Payment:Payment@newAction'); ?>"><?php $this->show('Open on site'); ?></a>
+    </div>
+</div>
+
 
 <div class="card">
     <div class="table-responsive">
