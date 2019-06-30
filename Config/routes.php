@@ -21,6 +21,10 @@ return array(
         'controller' => 'Admin:Transaction@deleteAction'
     ),
 
+    '/%s/module/payment/notify/(:var)' => array(
+        'controller' => 'Admin:Transaction@notifyAction'
+    ),
+
     '/payment/transaction/new' => array(
         'controller' => 'Payment@newAction'
     ),

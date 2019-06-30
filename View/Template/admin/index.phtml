@@ -74,6 +74,19 @@ use Cms\View\Icon;
             ),
 
             'actions' => array(
+                'notify' => function($row){
+                    // Don't show this button for successful transactions
+                    if ($row['status'] == StatusCollection::PARAM_STATUS_COMPLETE || !$row['amount']) {
+                        return null;
+                    }
+
+                    return Icon::button(
+                        'fas fa-envelope-open-text',
+                        $this->url('Payment:Admin:Transaction@notifyAction', $row['token']),
+                        $this->translate('Email client payment link')
+                    );
+                },
+
                 'edit' => function($row){
                     return Icon::edit(
                         $this->url('Payment:Admin:Transaction@editAction', $row['id']),
