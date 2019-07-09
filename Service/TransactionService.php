@@ -60,6 +60,17 @@ final class TransactionService extends AbstractManager
     }
 
     /**
+     * Deletes transactions by their ids
+     * 
+     * @param array $ids
+     * @return string
+     */
+    public function deleteByIds(array $ids)
+    {
+        return $this->transactionMapper->deleteByPks($ids);
+    }
+
+    /**
      * Deletes transaction by its id
      * 
      * @param int $id Transaction id
