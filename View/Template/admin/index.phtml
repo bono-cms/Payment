@@ -7,108 +7,108 @@ use Cms\View\Icon;
 ?>
 
 <div class="btn-toolbar">
-    <div class="btn-group mr-2">
-        <a class="btn btn-primary" href="<?= $this->url('Payment:Admin:Transaction@addAction'); ?>"><?php $this->show('Add new transaction'); ?></a>
-    </div>
-
-    <div class="btn-group mr-2">
-        <a class="btn btn-primary" href="<?= $this->url('Payment:Payment@newAction'); ?>"><?php $this->show('Open on site'); ?></a>
-    </div>
+    <?php $this->loadPartial('menu', array(
+        'items' => array(
+            'Payment:Admin:Transaction@addAction' => 'Add new transaction',
+            'Payment:Payment@newAction' => 'Open on site',
+        ),
+        'actions' => array(
+            'data' => $transactions,
+            'delete' => 'Payment:Admin:Transaction@deleteAction'
+        )
+    )); ?>
 </div>
 
-
 <div class="card">
-    <div class="table-responsive">
-        <?= $this->widget(new GridViewWidget($transactions, array(
-            'tableClass' => 'table table-hover table-bordered table-striped',
-            'rowAttributes' => array(
-                'class' => function($row){
-                    return $row['status'] == StatusCollection::PARAM_STATUS_COMPLETE ? 'table-info' : 'table-warning';
-                }
-            ),
-            'columns' => array(
-                array(
-                    'column' => 'id',
-                    'label' => '#'
-                ),
-
-                array(
-                    'column' => 'payer'
-                ),
-
-                array(
-                    'column' => 'email'
-                ),
-
-                array(
-                    'column' => 'datetime',
-                    'label' => 'Date and time'
-                ),
-
-                array(
-                    'column' => 'amount',
-                    'value' => function($row){
-                        return number_format($row['amount']) . ' ' . $row['currency'];
+    <form>
+        <div class="table-responsive">
+            <?= $this->widget(new GridViewWidget($transactions, array(
+                'tableClass' => 'table table-hover table-bordered table-striped',
+                'rowAttributes' => array(
+                    'class' => function($row){
+                        return $row['status'] == StatusCollection::PARAM_STATUS_COMPLETE ? 'table-success' : null;
                     }
                 ),
+                'batch' => true,
+                'pk' => 'id',
+                'columns' => array(
+                    array(
+                        'column' => 'id',
+                        'label' => '#'
+                    ),
 
-                array(
-                    'column' => 'module',
-                    'translateable' => true
+                    array(
+                        'column' => 'payer'
+                    ),
+
+                    array(
+                        'column' => 'email'
+                    ),
+
+                    array(
+                        'column' => 'datetime',
+                        'label' => 'Date and time'
+                    ),
+
+                    array(
+                        'column' => 'amount',
+                        'value' => function($row){
+                            return number_format($row['amount']) . ' ' . $row['currency'];
+                        }
+                    ),
+
+                    array(
+                        'column' => 'extension',
+                        'label' => 'Payment System',
+                        'translateable' => true
+                    ),
+
+                    array(
+                        'column' => 'status',
+                        'translateable' => true,
+                        'value' => function($row){
+                            $stCol = new StatusCollection();
+                            return $stCol->findByKey($row['status']);
+                        }
+                    )
                 ),
 
-                array(
-                    'column' => 'extension',
-                    'label' => 'Payment System',
-                    'translateable' => true
-                ),
+                'actions' => array(
+                    'notify' => function($row){
+                        // Don't show this button for successful transactions
+                        if ($row['status'] == StatusCollection::PARAM_STATUS_COMPLETE || !$row['amount']) {
+                            return null;
+                        }
 
-                array(
-                    'column' => 'status',
-                    'translateable' => true,
-                    'value' => function($row){
-                        $stCol = new StatusCollection();
-                        return $stCol->findByKey($row['status']);
+                        return Icon::button(
+                            'fas fa-envelope-open-text',
+                            $this->url('Payment:Admin:Transaction@notifyAction', $row['token']),
+                            $this->translate('Email client payment link')
+                        );
+                    },
+
+                    'edit' => function($row){
+                        return Icon::edit(
+                            $this->url('Payment:Admin:Transaction@editAction', $row['id']),
+                            $this->translate('Edit this transaction')
+                        );
+                    },
+
+                    'delete' => function($row){
+                        return Icon::remove(
+                            $this->url('Payment:Admin:Transaction@deleteAction', $row['id']),
+                            $this->translate('Delete this transaction')
+                        );
                     }
                 )
-            ),
 
-            'actions' => array(
-                'notify' => function($row){
-                    // Don't show this button for successful transactions
-                    if ($row['status'] == StatusCollection::PARAM_STATUS_COMPLETE || !$row['amount']) {
-                        return null;
-                    }
+            ))); ?>
 
-                    return Icon::button(
-                        'fas fa-envelope-open-text',
-                        $this->url('Payment:Admin:Transaction@notifyAction', $row['token']),
-                        $this->translate('Email client payment link')
-                    );
-                },
-
-                'edit' => function($row){
-                    return Icon::edit(
-                        $this->url('Payment:Admin:Transaction@editAction', $row['id']),
-                        $this->translate('Edit this transaction')
-                    );
-                },
-
-                'delete' => function($row){
-                    return Icon::remove(
-                        $this->url('Payment:Admin:Transaction@deleteAction', $row['id']),
-                        $this->translate('Delete this transaction')
-                    );
-                }
-            )
-
-        ))); ?>
-
-        <?php if (empty($transactions)): ?>
-        <div class="center-block">
-            <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No transactions'); ?></h2>
+            <?php if (empty($transactions)): ?>
+            <div class="center-block">
+                <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No transactions'); ?></h2>
+            </div>
+            <?php endif; ?>
         </div>
-        <?php endif; ?>
-
-    </div>
+    </form>
 </div>
