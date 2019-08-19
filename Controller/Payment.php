@@ -82,7 +82,9 @@ final class Payment extends AbstractController
         if ($transaction) {
             // Don't allow processing finished transaction
             if ($transaction['status'] == StatusCollection::PARAM_STATUS_COMPLETE) {
-                return $this->view->render('process-error');
+                return $this->view->render('process-error', array(
+                    'title' => 'Transaction error'
+                ));
             }
 
             // Create back URL
