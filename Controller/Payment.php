@@ -56,7 +56,7 @@ final class Payment extends AbstractController
 
         if ($response->canceled()) {
             return $this->view->render('cancel', array(
-                'title' => 'Payment cancelation'
+                'title' => 'Payment cancellation'
             ));
         } else {
             // Now confirm payment by token, since its successful
