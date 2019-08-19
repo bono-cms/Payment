@@ -14,8 +14,8 @@ $this->getPluginBag()->appendStylesheets(array(
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="<?= $csrfToken; ?>" />
 
-    <title><?= $title; ?></title>
-    
+    <title><?php $this->show($title); ?></title>
+
     <?php foreach ($this->getPluginBag()->getStylesheets() as $src): ?>
     <link rel="stylesheet" href="<?= $src; ?>" />
     <?php endforeach; ?>
@@ -34,5 +34,6 @@ $this->getPluginBag()->appendStylesheets(array(
 <?php foreach ($this->getPluginBag()->getScripts() as $src): ?>
 <script src="<?= $src; ?>"></script>
 <?php endforeach; ?>
+
 </body>
 </html>
