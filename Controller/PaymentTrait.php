@@ -21,15 +21,14 @@ trait PaymentTrait
     /**
      * Renders payment gateway
      * 
-     * @param string $controller
-     * @param string $token
-     * @param array $transaction
+     * @param string $controller Route to response handler
+     * @param array $transaction Transaction row
      * @return string
      */
-    protected function renderGateway($controller, $token, array $transaction)
+    protected function renderGateway($controller, array $transaction)
     {
         // Create back URL
-        $backUrl = $this->request->getBaseUrl() . $this->createUrl($controller, [$token]);
+        $backUrl = $this->request->getBaseUrl() . $this->createUrl($controller, [$transaction['token']]);
         $gateway = ExtensionFactory::build($transaction['extension'], $transaction['amount'], $transaction['id'], $backUrl);
 
         return $this->view->disableLayout()->render('gateway', [

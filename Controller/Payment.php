@@ -86,7 +86,7 @@ final class Payment extends AbstractController
                 ));
             }
 
-            return $this->renderGateway('Payment:Payment@responseAction', $token, $transaction);
+            return $this->renderGateway('Payment:Payment@responseAction', $transaction);
         } else {
             // Invalid token
             return false;
