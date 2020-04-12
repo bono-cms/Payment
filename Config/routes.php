@@ -33,7 +33,7 @@ return array(
         'controller' => 'Payment@gatewayAction'
     ),
 
-    '/payment/transaction/success/(:var)' => array(
-        'controller' => 'Payment@successAction'
+    '/payment/transaction/response/(:var)' => array(
+        'controller' => 'Payment@responseAction'
     )
 );
