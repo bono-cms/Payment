@@ -19,6 +19,18 @@ use Payment\Extension\ResponseFactory;
 trait PaymentTrait
 {
     /**
+     * Configures view instance to render templates from payment module
+     * 
+     * @return void
+     */
+    protected function switchToPaymentView()
+    {
+        // Force to render templates only from current module
+        $this->view->setModule('Payment')
+                   ->setTheme('payment');
+    }
+
+    /**
      * Render response template
      * 
      * @param string $code Response code constant
@@ -26,6 +38,8 @@ trait PaymentTrait
      */
     protected function renderResponse($code)
     {
+        $this->switchToPaymentView();
+
         return $this->view->render('response', [
             'code' => $code
         ]);
@@ -40,6 +54,8 @@ trait PaymentTrait
      */
     protected function renderGateway($controller, array $transaction)
     {
+        $this->switchToPaymentView();
+
         // Create back URL
         $backUrl = $this->request->getBaseUrl() . $this->createUrl($controller, [$transaction['token']]);
         $gateway = ExtensionFactory::build($transaction['extension'], $transaction['amount'], $transaction['id'], $backUrl);

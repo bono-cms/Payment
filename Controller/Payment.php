@@ -36,10 +36,6 @@ final class Payment extends AbstractController
         }
 
         parent::bootstrap($action);
-
-        // Force to render templates only from current module
-        $this->view->setModule('Payment')
-                   ->setTheme('payment');
     }
 
     /**
@@ -101,6 +97,8 @@ final class Payment extends AbstractController
             $entity['product'] = $this->request->getQuery('product');
             $entity['amount'] = $this->request->getQuery('amount', false);
             $entity['currency'] = 'USD';
+
+            $this->switchToPaymentView();
 
             return $this->view->render('form', array(
                 'entity' => $entity,
