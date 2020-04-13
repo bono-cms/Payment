@@ -14,7 +14,7 @@ $this->getPluginBag()->appendStylesheets(array(
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="<?= $csrfToken; ?>" />
 
-    <title><?php $this->show($title); ?></title>
+    <title><?php $this->show(isset($title) ? $title : 'Payment processing'); ?></title>
 
     <?php foreach ($this->getPluginBag()->getStylesheets() as $src): ?>
     <link rel="stylesheet" href="<?= $src; ?>" />
