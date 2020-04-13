@@ -14,6 +14,7 @@ namespace Payment\Controller;
 use Site\Controller\AbstractController;
 use Payment\Extension\ExtensionFactory;
 use Payment\Collection\StatusCollection;
+use Payment\Collection\ResponseCodeCollection;
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Validate\Pattern;
 
@@ -54,16 +55,11 @@ final class Payment extends AbstractController
         $response = $this->createReponse($transaction['extension']);
 
         if ($response->canceled()) {
-            return $this->view->render('cancel', array(
-                'title' => 'Payment cancellation'
-            ));
+            return $this->renderResponse(ResponseCodeCollection::RESPONSE_CANCEL);
         } else {
             // Now confirm payment by token, since its successful
             $this->getModuleService('transactionService')->confirmPayment($token);
-
-            return $this->view->render('success', array(
-                'title' => 'Your payment has been accepted'
-            ));
+            return $this->renderResponse(ResponseCodeCollection::RESPONSE_SUCCESS);
         }
     }
 
@@ -81,9 +77,7 @@ final class Payment extends AbstractController
         if ($transaction) {
             // Don't allow processing finished transaction
             if ($transaction['status'] == StatusCollection::PARAM_STATUS_COMPLETE) {
-                return $this->view->render('process-error', array(
-                    'title' => 'Transaction error'
-                ));
+                return $this->renderResponse(ResponseCodeCollection::RESPONSE_DUPLICATE);
             }
 
             return $this->renderGateway('Payment:Payment@responseAction', $transaction);

@@ -19,6 +19,19 @@ use Payment\Extension\ResponseFactory;
 trait PaymentTrait
 {
     /**
+     * Render response template
+     * 
+     * @param string $code Response code constant
+     * @return string
+     */
+    protected function renderResponse($code)
+    {
+        return $this->view->render('response', [
+            'code' => $code
+        ]);
+    }
+
+    /**
      * Renders payment gateway
      * 
      * @param string $controller Route to response handler
