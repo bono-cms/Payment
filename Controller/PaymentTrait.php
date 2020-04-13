@@ -12,6 +12,7 @@
 namespace Payment\Controller;
 
 use Payment\Extension\ResponseFactory;
+use Payment\Extension\ExtensionFactory;
 
 /**
  * Shared trait to be used in controllers that process payments

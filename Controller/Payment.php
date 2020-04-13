@@ -12,7 +12,6 @@
 namespace Payment\Controller;
 
 use Site\Controller\AbstractController;
-use Payment\Extension\ExtensionFactory;
 use Payment\Collection\StatusCollection;
 use Payment\Collection\ResponseCodeCollection;
 use Krystal\Stdlib\VirtualEntity;
