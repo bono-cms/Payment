@@ -12,9 +12,8 @@
 namespace Payment\Controller;
 
 use Site\Controller\AbstractController;
-use Payment\Extension\ExtensionFactory;
-use Payment\Extension\ResponseFactory;
 use Payment\Collection\StatusCollection;
+use Payment\Collection\ResponseCodeCollection;
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Validate\Pattern;
 
@@ -23,21 +22,19 @@ use Krystal\Validate\Pattern;
  */
 final class Payment extends AbstractController
 {
+    use PaymentTrait;
+
     /**
      * {@inheritDoc}
      */
     protected function bootstrap($action)
     {
         // Disabled CSRF for gateway action
-        if ($action === 'successAction') {
+        if ($action === 'responseAction') {
             $this->enableCsrf = false;
         }
 
         parent::bootstrap($action);
-
-        // Force to render templates only from current module
-        $this->view->setModule('Payment')
-                   ->setTheme('payment');
     }
 
     /**
@@ -46,25 +43,18 @@ final class Payment extends AbstractController
      * @param string $token Unique transaction token
      * @return mixed
      */
-    public function successAction($token)
+    public function responseAction($token)
     {
         // Find transaction row by its token
         $transaction = $this->getModuleService('transactionService')->fetchByToken($token);
-
-        $responseFactory = new ResponseFactory($this->serviceLocator);
-        $response = $responseFactory->build($transaction['extension']);
+        $response = $this->createReponse($transaction['extension']);
 
         if ($response->canceled()) {
-            return $this->view->render('cancel', array(
-                'title' => 'Payment cancellation'
-            ));
+            return $this->renderResponse(ResponseCodeCollection::RESPONSE_CANCEL);
         } else {
             // Now confirm payment by token, since its successful
             $this->getModuleService('transactionService')->confirmPayment($token);
-
-            return $this->view->render('success', array(
-                'title' => 'Your payment has been accepted'
-            ));
+            return $this->renderResponse(ResponseCodeCollection::RESPONSE_SUCCESS);
         }
     }
 
@@ -82,19 +72,10 @@ final class Payment extends AbstractController
         if ($transaction) {
             // Don't allow processing finished transaction
             if ($transaction['status'] == StatusCollection::PARAM_STATUS_COMPLETE) {
-                return $this->view->render('process-error', array(
-                    'title' => 'Transaction error'
-                ));
+                return $this->renderResponse(ResponseCodeCollection::RESPONSE_DUPLICATE);
             }
 
-            // Create back URL
-            $backUrl = $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@successAction', array($token));
-            $gateway = ExtensionFactory::build($transaction['extension'], $transaction['amount'], $transaction['id'], $backUrl);
-
-            return $this->view->disableLayout()->render('gateway', array(
-                'gateway' => $gateway
-            ));
-
+            return $this->renderGateway('Payment:Payment@responseAction', $transaction);
         } else {
             // Invalid token
             return false;
@@ -115,6 +96,8 @@ final class Payment extends AbstractController
             $entity['product'] = $this->request->getQuery('product');
             $entity['amount'] = $this->request->getQuery('amount', false);
             $entity['currency'] = 'USD';
+
+            $this->switchToPaymentView();
 
             return $this->view->render('form', array(
                 'entity' => $entity,

@@ -22,7 +22,7 @@ final class Prime4GFactory
      * @param array $credits
      * @return self
      */
-    public function build($price, int $orderId, string $back, array $options = array())
+    public function build($price, $orderId, $back, array $options = array())
     {
         $options = array_merge(include(__DIR__ . '/config.php'), $options);
 

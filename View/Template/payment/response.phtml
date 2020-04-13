@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * This template render after payment is processed.
+ * You can use $code variable to determine what happened
+ */
+
+use Payment\Collection\ResponseCodeCollection;
+
+?>
+
+<section class="mt-5">
+    <?php if ($code == ResponseCodeCollection::RESPONSE_SUCCESS): ?>
+    <p><?php $this->show('Thank you!'); ?></p>
+    <p><?php $this->show('You have successfully confirmed your payment.'); ?></p>
+
+    <?php endif; ?>
+
+
+    <?php if ($code == ResponseCodeCollection::RESPONSE_CANCEL): ?>
+    <h3><?php $this->show('Payment cancellation'); ?></h3>
+    <p><?php $this->show('You canceled payment'); ?></p>
+
+    <?php endif; ?>
+
+
+    <?php if ($code == ResponseCodeCollection::RESPONSE_DUPLICATE): ?>
+    <h3><?php $this->show('Error'); ?></h3>
+    <p><?php $this->show('This transaction has already been processed'); ?></p>
+
+    <?php endif; ?>
+</section>
