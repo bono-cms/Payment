@@ -9,24 +9,22 @@ use Payment\Collection\ResponseCodeCollection;
 
 ?>
 
-<section class="mt-5">
+<div class="mt-5">
     <?php if ($code == ResponseCodeCollection::RESPONSE_SUCCESS): ?>
-    <p><?php $this->show('Thank you!'); ?></p>
+    <h3 class="mb-3"><?php $this->show('Thank you!'); ?></h3>
     <p><?php $this->show('You have successfully confirmed your payment.'); ?></p>
-
     <?php endif; ?>
-
 
     <?php if ($code == ResponseCodeCollection::RESPONSE_CANCEL): ?>
-    <h3><?php $this->show('Payment cancellation'); ?></h3>
-    <p><?php $this->show('You canceled payment'); ?></p>
-
+    <h3 class="mb-3"><?php $this->show('Payment cancellation'); ?></h3>
+    <p><?php $this->show('You canceled payment or internal error occurred'); ?></p>
     <?php endif; ?>
 
-
     <?php if ($code == ResponseCodeCollection::RESPONSE_DUPLICATE): ?>
-    <h3><?php $this->show('Error'); ?></h3>
+    <h3 class="mb-3"><?php $this->show('Error'); ?></h3>
     <p><?php $this->show('This transaction has already been processed'); ?></p>
 
     <?php endif; ?>
-</section>
+    
+    <p><a class="text-muted" href="/"><?php $this->show('Go home'); ?></a></p>
+</div>
