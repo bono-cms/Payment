@@ -12,6 +12,7 @@
 namespace Payment\Extension;
 
 use Krystal\InstanceManager\ServiceLocatorInterface;
+use RuntimeException;
 
 final class ResponseFactory
 {
