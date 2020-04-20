@@ -50,10 +50,10 @@ trait PaymentTrait
      * Renders payment gateway
      * 
      * @param string $controller Route to response handler
-     * @param array $transaction Transaction row
+     * @param array|\ArrayAccess $transaction Transaction row
      * @return string
      */
-    protected function renderGateway($controller, array $transaction)
+    protected function renderGateway($controller, $transaction)
     {
         $this->switchToPaymentView();
 
