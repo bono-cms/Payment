@@ -47,7 +47,7 @@ final class Payment extends AbstractController
     {
         // Find transaction row by its token
         $transaction = $this->getModuleService('transactionService')->fetchByToken($token);
-        $response = $this->createReponse($transaction['extension']);
+        $response = $this->createResponse($transaction['extension']);
 
         if ($response->canceled()) {
             return $this->renderResponse(ResponseCodeCollection::RESPONSE_CANCEL);
