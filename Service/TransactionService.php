@@ -134,6 +134,7 @@ final class TransactionService extends AbstractManager
 
         // Data to be inserted
         $data = array(
+            'email' => $email,
             'datetime' => TimeHelper::getNow(),
             'payer' => $payer,
             'amount' => $amount,
