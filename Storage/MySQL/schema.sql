@@ -1,4 +1,3 @@
-
 DROP TABLE IF EXISTS `bono_module_payment_transactions`;
 
 CREATE TABLE bono_module_payment_transactions (
@@ -13,4 +12,4 @@ CREATE TABLE bono_module_payment_transactions (
     `extension` varchar(255) NOT NULL COMMENT 'Payment system used to perform transaction',
     `description` TEXT NOT NULL COMMENT 'Transaction description',
     `token` varchar(255) NOT NULL COMMENT 'Unique transaction token'
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

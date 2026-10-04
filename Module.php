@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -25,9 +23,9 @@ final class Module extends AbstractCmsModule
         $config = $this->getConfig();
         $constraints = $config['constraints'];
 
-        return array(
+        return [
             'transactionService' => new TransactionService($this->getMapper('\Payment\Storage\MySQL\TransactionMapper')),
             'extensionService' => new ExtensionService($this->moduleManager, $constraints)
-        );
+        ];
     }
 }

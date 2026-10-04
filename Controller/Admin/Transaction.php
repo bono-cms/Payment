@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -14,7 +12,6 @@ namespace Payment\Controller\Admin;
 use Cms\Controller\Admin\AbstractController;
 use Payment\Collection\StatusCollection;
 use Krystal\Stdlib\VirtualEntity;
-use Krystal\Stdlib\ArrayUtils;
 use Krystal\Date\TimeHelper;
 
 final class Transaction extends AbstractController
@@ -32,10 +29,10 @@ final class Transaction extends AbstractController
 
         if ($invoice !== false) {
             // Parameters for message body
-            $params = array(
+            $params = [
                 'invoice' => $invoice,
-                'link' => $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@gatewayAction', array($invoice->getToken()))
-            );
+                'link' => $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@gatewayAction', [$invoice->getToken()])
+            ];
 
             // Create email body
             $body = $this->view->renderRaw('Payment', 'mail', 'notify', $params);
@@ -71,12 +68,12 @@ final class Transaction extends AbstractController
                    ->addOne('Payments', 'Payment:Admin:Transaction@indexAction')
                    ->addOne($transaction->getId() ? 'Edit the transaction' : 'Add new transaction');
 
-        return $this->view->render('form', array(
+        return $this->view->render('form', [
             'transaction' => $transaction,
             'statuses' => $stCol->getAll(),
             'modules' => $extensionService->getModules(),
             'extensions' => $extensionService->getExtensions()
-        ));
+        ]);
     }
 
     /**
@@ -89,15 +86,55 @@ final class Transaction extends AbstractController
         // Get raw POST data
         $input = $this->request->getPost('transaction');
 
-        $transactionService = $this->getModuleService('transactionService');
-        $transactionService->save($input);
+        $validator = $this->createValidation();
 
-        if ($input['id']) {
-            $this->flashBag->set('success', 'The element has been updated successfully');
-            return 1;
+        $validator->field('transaction.payer')
+                  ->required();
+
+        $validator->field('transaction.email')
+                  ->required()
+                  ->addRule('email');
+
+        $validator->field('transaction.amount')
+                  ->required()
+                  ->addRule('numeric');
+
+        $validator->field('transaction.currency')
+                  ->required();
+
+        $validator->field('transaction.extension')
+                  ->required();
+
+        $validator->field('transaction.status')
+                  ->required();
+
+        $validator->field('transaction.datetime')
+                  ->required();
+
+        $validator->field('transaction.module')
+                  ->required();
+
+        if ($validator->isPassed()) {
+            $transactionService = $this->getModuleService('transactionService');
+            $transactionService->save($input);
+
+            if ($input['id']) {
+                $this->flashBag->set('success', 'The element has been updated successfully');
+
+                return $this->json([
+                    'refresh' => true
+                ]);
+            } else {
+                $this->flashBag->set('success', 'The element has been created successfully');
+
+                return $this->json([
+                    'redirect' => $this->createUrl('Payment:Admin:Transaction@editAction', [$transactionService->getLastId()]),
+                ]);
+            }
         } else {
-            $this->flashBag->set('success', 'The element has been created successfully');
-            return $transactionService->getLastId();
+            return $this->json([
+                'errors' => $validator->getErrors()
+            ]);
         }
     }
 
@@ -142,9 +179,9 @@ final class Transaction extends AbstractController
         $this->view->getBreadcrumbBag()
                    ->addOne('Payments');
 
-        return $this->view->render('index', array(
+        return $this->view->render('index', [
             'transactions' => $this->getModuleService('transactionService')->fetchAll()
-        ));
+        ]);
     }
 
     /**
@@ -174,6 +211,8 @@ final class Transaction extends AbstractController
             $this->flashBag->set('success', 'Selected element has been removed successfully');
         }
 
-        return 1;
+        return $this->json([
+            'refresh' => true
+        ]);
     }
 }

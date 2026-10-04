@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -15,7 +13,6 @@ use Site\Controller\AbstractController;
 use Payment\Collection\StatusCollection;
 use Payment\Collection\ResponseCodeCollection;
 use Krystal\Stdlib\VirtualEntity;
-use Krystal\Validate\Pattern;
 
 /**
  * Main payment controller, that handles all transactions
@@ -99,28 +96,26 @@ final class Payment extends AbstractController
 
             $this->switchToPaymentView();
 
-            return $this->view->render('form', array(
+            return $this->view->render('form', [
                 'entity' => $entity,
                 'extensions' => $this->getModuleService('extensionService')->getExtensions(),
                 'modules' => $this->getModuleService('extensionService')->getModules(),
                 'title' => 'New payment'
-            ));
+            ]);
 
         } else {
             $data = $this->request->getPost();
 
-            // Build form validator
-            $formValidator = $this->createValidator(array(
-                'input' => array(
-                    'source' => $data,
-                    'definition' => array(
-                        'payer' => new Pattern\Name(),
-                        'email' => new Pattern\Email()
-                    )
-                )
-            ));
+            $validator = $this->createValidation();
 
-            if ($formValidator->isValid()) {
+            $validator->field('payer')
+                      ->required();
+
+            $validator->field('email')
+                      ->required()
+                      ->addRule('email');
+
+            if ($validator->isPassed()) {
                 // Add now and get last token
                 $token = $this->getModuleService('transactionService')->add(
                     $data['email'],
@@ -134,16 +129,21 @@ final class Payment extends AbstractController
                 // If amount not provided, then update
                 if (!isset($data['amount'])) {
                     $this->flashBag->set('success', 'Thanks! Your invoice has been sent');
-                    return '1';
+
+                    return $this->json([
+                        'refresh' => true
+                    ]);
                 } else {
                     // Otherwise redirect to payment page
-                    return $this->json(array(
-                        'backUrl' => $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@gatewayAction', array($token))
-                    ));
+                    return $this->json([
+                        'redirect' => $this->request->getBaseUrl() . $this->createUrl('Payment:Payment@gatewayAction', [$token])
+                    ]);
                 }
 
             } else {
-                return $formValidator->getErrors();
+                return $this->json([
+                    'errors' => $validator->getErrors()
+                ]);
             }
         }
     }

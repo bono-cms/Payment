@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -133,7 +131,7 @@ final class TransactionService extends AbstractManager
         $token = TextUtils::uniqueString();
 
         // Data to be inserted
-        $data = array(
+        $data = [
             'email' => $email,
             'datetime' => TimeHelper::getNow(),
             'payer' => $payer,
@@ -143,7 +141,7 @@ final class TransactionService extends AbstractManager
             'extension' => $extension,
             'status' => StatusCollection::PARAM_STATUS_TEMPORARY,
             'token' => $token
-        );
+        ];
 
         // Save data
         $this->transactionMapper->persist($data);
