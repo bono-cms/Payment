@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?php $this->show('Processing your request... Please wait'); ?></title>
+    <title><?= $this->translate('Processing your request... Please wait'); ?></title>
 </head>
 <body>
     <form method="<?= $gateway->getMethod(); ?>" action="<?= $gateway->getAction(); ?>">

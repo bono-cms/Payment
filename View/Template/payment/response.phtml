@@ -11,20 +11,20 @@ use Payment\Collection\ResponseCodeCollection;
 
 <div class="mt-5">
     <?php if ($code == ResponseCodeCollection::RESPONSE_SUCCESS): ?>
-    <h3 class="mb-3"><?php $this->show('Thank you!'); ?></h3>
-    <p><?php $this->show('You have successfully confirmed your payment.'); ?></p>
+    <h3 class="mb-3"><?= $this->translate('Thank you!'); ?></h3>
+    <p><?= $this->translate('You have successfully confirmed your payment.'); ?></p>
     <?php endif; ?>
 
     <?php if ($code == ResponseCodeCollection::RESPONSE_CANCEL): ?>
-    <h3 class="mb-3"><?php $this->show('Payment cancellation'); ?></h3>
-    <p><?php $this->show('You canceled payment or internal error occurred'); ?></p>
+    <h3 class="mb-3"><?= $this->translate('Payment cancellation'); ?></h3>
+    <p><?= $this->translate('You canceled payment or internal error occurred'); ?></p>
     <?php endif; ?>
 
     <?php if ($code == ResponseCodeCollection::RESPONSE_DUPLICATE): ?>
-    <h3 class="mb-3"><?php $this->show('Error'); ?></h3>
-    <p><?php $this->show('This transaction has already been processed'); ?></p>
+    <h3 class="mb-3"><?= $this->translate('Error'); ?></h3>
+    <p><?= $this->translate('This transaction has already been processed'); ?></p>
 
     <?php endif; ?>
     
-    <p><a class="text-muted" href="/"><?php $this->show('Go home'); ?></a></p>
+    <p><a class="text-muted" href="/"><?= $this->translate('Go home'); ?></a></p>
 </div>

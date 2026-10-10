@@ -7,74 +7,74 @@ use Cms\View\Icon;
 ?>
 
 <div class="btn-toolbar">
-    <?php $this->loadPartial('menu', array(
-        'items' => array(
+    <?php $this->loadPartial('menu', [
+        'items' => [
             'Payment:Admin:Transaction@addAction' => 'Add new transaction',
             'Payment:Payment@newAction' => 'Open on site',
-        ),
-        'actions' => array(
+        ],
+        'actions' => [
             'data' => $transactions,
             'delete' => 'Payment:Admin:Transaction@deleteAction'
-        )
-    )); ?>
+        ]
+    ]); ?>
 </div>
 
 <div class="card">
     <form>
         <div class="table-responsive">
-            <?= $this->widget(new GridViewWidget($transactions, array(
+            <?= $this->widget(new GridViewWidget($transactions, [
                 'tableClass' => 'table table-hover table-bordered table-striped',
-                'rowAttributes' => array(
+                'rowAttributes' => [
                     'class' => function($row){
                         return $row['status'] == StatusCollection::PARAM_STATUS_COMPLETE ? 'table-success' : null;
                     }
-                ),
+                ],
                 'batch' => true,
                 'pk' => 'id',
-                'columns' => array(
-                    array(
+                'columns' => [
+                    [
                         'column' => 'id',
                         'label' => '#'
-                    ),
+                    ],
 
-                    array(
+                    [
                         'column' => 'payer'
-                    ),
+                    ],
 
-                    array(
+                    [
                         'column' => 'email'
-                    ),
+                    ],
 
-                    array(
+                    [
                         'column' => 'datetime',
                         'label' => 'Date and time'
-                    ),
+                    ],
 
-                    array(
+                    [
                         'column' => 'amount',
                         'value' => function($row){
                             return number_format($row['amount']) . ' ' . $row['currency'];
                         }
-                    ),
+                    ],
 
-                    array(
+                    [
                         'column' => 'extension',
                         'label' => 'Payment System',
                         'translateable' => true
-                    ),
+                    ],
 
-                    array(
+                    [
                         'column' => 'status',
                         'translateable' => true,
                         'value' => function($row){
                             $stCol = new StatusCollection();
                             return $stCol->findByKey($row['status']);
                         }
-                    )
-                ),
+                    ]
+                ],
 
-                'actions' => array(
-                    'notify' => function($row){
+                'actions' => [
+                    function($row){
                         // Don't show this button for successful transactions
                         if ($row['status'] == StatusCollection::PARAM_STATUS_COMPLETE || !$row['amount']) {
                             return null;
@@ -87,26 +87,25 @@ use Cms\View\Icon;
                         );
                     },
 
-                    'edit' => function($row){
+                    function($row){
                         return Icon::edit(
                             $this->url('Payment:Admin:Transaction@editAction', $row['id']),
                             $this->translate('Edit this transaction')
                         );
                     },
 
-                    'delete' => function($row){
+                    function($row){
                         return Icon::remove(
                             $this->url('Payment:Admin:Transaction@deleteAction', $row['id']),
                             $this->translate('Delete this transaction')
                         );
                     }
-                )
-
-            ))); ?>
+                ]
+            ])); ?>
 
             <?php if (empty($transactions)): ?>
             <div class="center-block">
-                <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No transactions'); ?></h2>
+                <h2 class="text-center text-muted"><i class="bi bi-x-circle"></i> <?= $this->translate('No transactions'); ?></h2>
             </div>
             <?php endif; ?>
         </div>
